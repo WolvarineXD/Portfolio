@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, FileText, Star, ListOrdered, Archive, Mail } from "lucide-react";
+import { Home, FileText, Star, Archive, Mail } from "lucide-react"; // Removed ListOrdered
 import {
   SidebarMenu,
   SidebarMenuItem,
@@ -12,10 +12,9 @@ import {
 const navItems = [
   { href: "/", label: "Home", icon: Home },
   { href: "/about", label: "About", icon: FileText },
-  { href: "/skills", label: "Skills", icon: Star }, // Assuming you'll create /skills page
-  { href: "/services", label: "Service", icon: ListOrdered }, // Assuming you'll create /services page
+  { href: "/skills", label: "Skills", icon: Star },
   { href: "/projects", label: "Portfolio", icon: Archive },
-  { href: "/contact", label: "Contact", icon: Mail }, // Assuming you'll create /contact page
+  { href: "/contact", label: "Contact", icon: Mail },
 ];
 
 export function MainNav() {
@@ -29,8 +28,7 @@ export function MainNav() {
             <SidebarMenuButton
               asChild
               isActive={pathname === item.href}
-              className="justify-between px-4" // px-4 for padding, justify-between for text left, icon right
-              // Removed tooltip as sidebar is not collapsible to icon-only in the target design
+              className="justify-between px-4"
             >
               <a>
                 <span>{item.label}</span>
