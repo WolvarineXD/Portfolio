@@ -6,7 +6,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Download, Send, Github, Mail, Phone, MapPin, ExternalLink, ArrowUpCircle } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -111,7 +111,13 @@ export default function HomePage() {
   });
 
   const [showScrollTopButton, setShowScrollTopButton] = useState(false);
-  const [animatedSubtitle, setAnimatedSubtitle] = useState("Frontend Developer");
+  const [animatedSubtitle, setAnimatedSubtitle] = useState("");
+  
+  const phrasesToAnimate = useRef(["Student at RV University", "Welcome to my Resume"]);
+  const currentPhraseIndex = useRef(0);
+  const currentCharIndex = useRef(0);
+  const isDeleting = useRef(false);
+  const animationTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     const checkScrollTop = () => {
@@ -126,63 +132,56 @@ export default function HomePage() {
   }, [showScrollTopButton]);
 
   useEffect(() => {
-    const initialText = "Frontend Developer"; // This is the text to be deleted
-    const targetText = "Student at RV University";
-    const typingSpeed = 100; // Milliseconds per character
-    const deletingSpeed = 60; // Milliseconds per character
-    const delayBeforeDeleting = 2000; // Milliseconds to wait before starting deletion
-    const delayAfterDeleting = 500; // Milliseconds to wait after deletion before typing new text
+    const typingSpeed = 120;
+    const deletingSpeed = 70;
+    const delayBeforeNewPhrase = 1500; // Pause after typing a full phrase
+    const delayAfterDeleting = 500; // Pause after deleting a full phrase
 
-    const timeoutIds: NodeJS.Timeout[] = [];
-    const intervalIds: NodeJS.Timer[] = [];
+    const handleTypingAnimation = () => {
+      const currentPhrase = phrasesToAnimate.current[currentPhraseIndex.current];
+      let newSubtitle = "";
+      let nextDelay = typingSpeed;
 
-    const scheduleTimeout = (fn: () => void, delay: number) => {
-      const id = setTimeout(fn, delay);
-      timeoutIds.push(id);
-      return id;
-    };
+      if (isDeleting.current) {
+        // Deleting
+        newSubtitle = currentPhrase.substring(0, currentCharIndex.current - 1);
+        setAnimatedSubtitle(newSubtitle);
+        currentCharIndex.current -= 1;
+        nextDelay = deletingSpeed;
 
-    const scheduleInterval = (fn: () => void, delay: number) => {
-      const id = setInterval(fn, delay);
-      intervalIds.push(id);
-      return id;
-    };
-    
-    // Start the animation sequence
-    scheduleTimeout(() => {
-      // Deleting phase
-      let currentDisplayForDelete = initialText; 
-      const deleteInterval = scheduleInterval(() => {
-        if (currentDisplayForDelete.length > 0) {
-          currentDisplayForDelete = currentDisplayForDelete.slice(0, -1);
-          setAnimatedSubtitle(currentDisplayForDelete);
-        } else {
-          clearInterval(deleteInterval);
-          // Transition to typing phase after a delay
-          scheduleTimeout(() => {
-            let typeIndex = 0;
-            let currentDisplayForType = ""; 
-            setAnimatedSubtitle(currentDisplayForType); 
-            
-            const typeInterval = scheduleInterval(() => {
-              if (typeIndex < targetText.length) {
-                currentDisplayForType += targetText[typeIndex];
-                setAnimatedSubtitle(currentDisplayForType);
-                typeIndex++;
-              } else {
-                clearInterval(typeInterval);
-              }
-            }, typingSpeed);
-          }, delayAfterDeleting);
+        if (newSubtitle === "") {
+          isDeleting.current = false;
+          currentPhraseIndex.current = (currentPhraseIndex.current + 1) % phrasesToAnimate.current.length;
+          currentCharIndex.current = 0; // Reset for the new phrase
+          nextDelay = delayAfterDeleting;
         }
-      }, deletingSpeed);
-    }, delayBeforeDeleting);
+      } else {
+        // Typing
+        newSubtitle = currentPhrase.substring(0, currentCharIndex.current + 1);
+        setAnimatedSubtitle(newSubtitle);
+        currentCharIndex.current += 1;
+
+        if (newSubtitle === currentPhrase) {
+          isDeleting.current = true;
+          nextDelay = delayBeforeNewPhrase;
+        }
+      }
+      
+      if (animationTimeoutRef.current) {
+        clearTimeout(animationTimeoutRef.current);
+      }
+      animationTimeoutRef.current = setTimeout(handleTypingAnimation, nextDelay);
+    };
+
+    // Start the animation
+    animationTimeoutRef.current = setTimeout(handleTypingAnimation, typingSpeed);
 
     return () => {
-      timeoutIds.forEach(clearTimeout);
-      intervalIds.forEach(clearInterval);
+      if (animationTimeoutRef.current) {
+        clearTimeout(animationTimeoutRef.current);
+      }
     };
-  }, []); // Empty dependency array ensures this runs once on mount
+  }, []);
 
 
   const scrollToTop = () => {
@@ -310,8 +309,8 @@ export default function HomePage() {
                   <Image
                     src={project.imageUrl}
                     alt={project.title}
-                    layout="fill"
-                    objectFit="cover"
+                    fill
+                    style={{objectFit: "cover"}}
                     className="transition-transform duration-500 group-hover:scale-105"
                     data-ai-hint={project.imageHint}
                   />
@@ -481,3 +480,5 @@ export default function HomePage() {
     </div>
   );
 }
+
+    
