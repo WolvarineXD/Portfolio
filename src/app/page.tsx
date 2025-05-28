@@ -3,10 +3,10 @@
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Download, Send, Github, Mail, Phone, MapPin, ExternalLink, ArrowUpCircle } from "lucide-react"; // Added ExternalLink, ArrowUpCircle
+import { Download, Send, Github, Mail, Phone, MapPin, ExternalLink, ArrowUpCircle } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useState, useEffect } from "react"; // Added useState, useEffect for scroll-to-top
+import React, { useState, useEffect } from "react";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -54,8 +54,7 @@ const projectsData: Project[] = [
     imageUrl: "https://placehold.co/600x400.png",
     imageHint: "portfolio website",
     tags: ["Next.js", "React", "Tailwind CSS", "TypeScript", "Shadcn UI"],
-    liveLink: "/#hero-section", 
-    sourceLink: "#", 
+    sourceLink: "#",
     category: "Web Development",
   },
   {
@@ -65,8 +64,7 @@ const projectsData: Project[] = [
     imageUrl: "https://placehold.co/600x400.png",
     imageHint: "online store",
     tags: ["React", "Node.js", "Express", "MongoDB", "Stripe API"],
-    liveLink: "#", 
-    sourceLink: "#", 
+    sourceLink: "#",
     category: "Full-Stack",
   },
   {
@@ -76,8 +74,7 @@ const projectsData: Project[] = [
     imageUrl: "https://placehold.co/600x400.png",
     imageHint: "task board",
     tags: ["Vue.js", "Firebase", "Vuetify"],
-    liveLink: "#", 
-    sourceLink: "#", 
+    sourceLink: "#",
     category: "Web Application",
   },
   {
@@ -87,7 +84,6 @@ const projectsData: Project[] = [
     imageUrl: "https://placehold.co/600x400.png",
     imageHint: "data charts",
     tags: ["D3.js", "Python", "Flask", "Pandas"],
-    liveLink: "#", 
     category: "Data Visualization",
   },
   {
@@ -115,6 +111,7 @@ export default function HomePage() {
   });
 
   const [showScrollTopButton, setShowScrollTopButton] = useState(false);
+  const [animatedSubtitle, setAnimatedSubtitle] = useState("Frontend Developer");
 
   useEffect(() => {
     const checkScrollTop = () => {
@@ -127,6 +124,66 @@ export default function HomePage() {
     window.addEventListener("scroll", checkScrollTop);
     return () => window.removeEventListener("scroll", checkScrollTop);
   }, [showScrollTopButton]);
+
+  useEffect(() => {
+    const initialText = "Frontend Developer"; // This is the text to be deleted
+    const targetText = "Student at RV University";
+    const typingSpeed = 100; // Milliseconds per character
+    const deletingSpeed = 60; // Milliseconds per character
+    const delayBeforeDeleting = 2000; // Milliseconds to wait before starting deletion
+    const delayAfterDeleting = 500; // Milliseconds to wait after deletion before typing new text
+
+    const timeoutIds: NodeJS.Timeout[] = [];
+    const intervalIds: NodeJS.Timer[] = [];
+
+    const scheduleTimeout = (fn: () => void, delay: number) => {
+      const id = setTimeout(fn, delay);
+      timeoutIds.push(id);
+      return id;
+    };
+
+    const scheduleInterval = (fn: () => void, delay: number) => {
+      const id = setInterval(fn, delay);
+      intervalIds.push(id);
+      return id;
+    };
+    
+    // Start the animation sequence
+    scheduleTimeout(() => {
+      // Deleting phase
+      let currentDisplayForDelete = initialText; 
+      const deleteInterval = scheduleInterval(() => {
+        if (currentDisplayForDelete.length > 0) {
+          currentDisplayForDelete = currentDisplayForDelete.slice(0, -1);
+          setAnimatedSubtitle(currentDisplayForDelete);
+        } else {
+          clearInterval(deleteInterval);
+          // Transition to typing phase after a delay
+          scheduleTimeout(() => {
+            let typeIndex = 0;
+            let currentDisplayForType = ""; 
+            setAnimatedSubtitle(currentDisplayForType); 
+            
+            const typeInterval = scheduleInterval(() => {
+              if (typeIndex < targetText.length) {
+                currentDisplayForType += targetText[typeIndex];
+                setAnimatedSubtitle(currentDisplayForType);
+                typeIndex++;
+              } else {
+                clearInterval(typeInterval);
+              }
+            }, typingSpeed);
+          }, delayAfterDeleting);
+        }
+      }, deletingSpeed);
+    }, delayBeforeDeleting);
+
+    return () => {
+      timeoutIds.forEach(clearTimeout);
+      intervalIds.forEach(clearInterval);
+    };
+  }, []); // Empty dependency array ensures this runs once on mount
+
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -150,8 +207,9 @@ export default function HomePage() {
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-3 text-foreground">
             Adith Kiran Kumar
           </h1>
-          <p className="text-xl md:text-2xl text-muted-foreground mb-8">
-            Frontend Developer
+          <p className="text-xl md:text-2xl text-muted-foreground mb-8 min-h-[1.5em]">
+            {animatedSubtitle || <>&nbsp;</>}
+            <span className="inline-block ml-1 animate-pulse opacity-75">|</span>
           </p>
           <div className="flex flex-col sm:flex-row items-start gap-4">
             <Button size="lg" className="bg-foreground text-primary hover:bg-foreground/90 w-full sm:w-auto">
@@ -244,8 +302,8 @@ export default function HomePage() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {projectsData.map((project) => (
-              <Card 
-                key={project.id} 
+              <Card
+                key={project.id}
                 className="flex flex-col overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out rounded-lg hover:-translate-y-1"
               >
                 <div className="relative w-full h-52 group">
@@ -423,6 +481,3 @@ export default function HomePage() {
     </div>
   );
 }
-
-
-    
