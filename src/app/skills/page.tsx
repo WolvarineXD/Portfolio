@@ -88,7 +88,7 @@ const skillsData: SkillCategory[] = [
 export default function SkillsPage() {
   return (
     <div className="container mx-auto py-8 px-4 md:px-0">
-      <Card className="overflow-hidden shadow-xl rounded-lg">
+      <Card className="overflow-hidden shadow-xl rounded-lg hover:shadow-2xl transition-shadow duration-300 ease-in-out hover:-translate-y-1">
         <CardHeader className="bg-muted/30 p-6 md:p-8">
           <CardTitle className="text-3xl md:text-4xl font-bold text-primary">My Skillset</CardTitle>
           <CardDescription className="text-lg md:text-xl text-muted-foreground mt-2">

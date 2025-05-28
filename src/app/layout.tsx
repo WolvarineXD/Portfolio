@@ -52,21 +52,21 @@ export default function RootLayout({
                <div className="flex justify-center space-x-3">
                 <Link href="#" passHref legacyBehavior>
                   <a target="_blank" rel="noopener noreferrer">
-                    <Button variant="ghost" size="icon" className="text-sidebar-foreground hover:bg-primary/20 hover:text-primary-foreground">
+                    <Button variant="ghost" size="icon" className="text-sidebar-foreground hover:bg-sidebar-primary hover:text-sidebar-primary-foreground">
                       <Twitter className="h-5 w-5" />
                     </Button>
                   </a>
                 </Link>
                 <Link href="#" passHref legacyBehavior>
                   <a target="_blank" rel="noopener noreferrer">
-                    <Button variant="ghost" size="icon" className="text-sidebar-foreground hover:bg-primary/20 hover:text-primary-foreground">
+                    <Button variant="ghost" size="icon" className="text-sidebar-foreground hover:bg-sidebar-primary hover:text-sidebar-primary-foreground">
                       <Facebook className="h-5 w-5" />
                     </Button>
                   </a>
                 </Link>
                 <Link href="#" passHref legacyBehavior>
                   <a target="_blank" rel="noopener noreferrer">
-                    <Button variant="ghost" size="icon" className="text-sidebar-foreground hover:bg-primary/20 hover:text-primary-foreground">
+                    <Button variant="ghost" size="icon" className="text-sidebar-foreground hover:bg-sidebar-primary hover:text-sidebar-primary-foreground">
                       <Linkedin className="h-5 w-5" />
                     </Button>
                   </a>

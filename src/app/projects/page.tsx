@@ -84,7 +84,10 @@ export default function ProjectsPage() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {projectsData.map((project) => (
-          <Card key={project.id} className="flex flex-col overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 ease-in-out rounded-lg">
+          <Card 
+            key={project.id} 
+            className="flex flex-col overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out rounded-lg hover:-translate-y-1"
+          >
             <div className="relative w-full h-52 group">
               <Image
                 src={project.imageUrl}
