@@ -183,6 +183,7 @@ const Sidebar = React.forwardRef<
         <div
           className={cn(
             "flex h-full w-[--sidebar-width] flex-col bg-sidebar text-sidebar-foreground",
+            side === "left" ? "ml-12" : "mr-12", // Added for non-collapsible too
             className
           )}
           ref={ref}
@@ -226,8 +227,9 @@ const Sidebar = React.forwardRef<
         <div
           className={cn(
             "duration-200 relative h-svh w-[--sidebar-width] bg-transparent transition-[width] ease-linear",
+            side === "left" ? "ml-12" : "mr-12", // Added margin to placeholder
             "group-data-[collapsible=offcanvas]:w-0",
-            "group-data-[side=right]:rotate-180",
+            // "group-data-[side=right]:rotate-180", // Removed as not present in original user file
             variant === "floating" || variant === "inset"
               ? "group-data-[collapsible=icon]:w-[calc(var(--sidebar-width-icon)_+_theme(spacing.4))]"
               : "group-data-[collapsible=icon]:w-[--sidebar-width-icon]"
@@ -237,8 +239,8 @@ const Sidebar = React.forwardRef<
           className={cn(
             "duration-200 fixed inset-y-0 z-10 hidden h-svh w-[--sidebar-width] transition-[left,right,width] ease-linear md:flex",
             side === "left"
-              ? "left-0 group-data-[collapsible=offcanvas]:left-[calc(var(--sidebar-width)*-1)]"
-              : "right-0 group-data-[collapsible=offcanvas]:right-[calc(var(--sidebar-width)*-1)]",
+              ? "left-12 group-data-[collapsible=offcanvas]:left-[calc(var(--sidebar-width)*-1)]" // Changed left-0 to left-12
+              : "right-12 group-data-[collapsible=offcanvas]:right-[calc(var(--sidebar-width)*-1)]", // Changed right-0 to right-12
             // Adjust the padding for floating and inset variants.
             variant === "floating" || variant === "inset"
               ? "p-2 group-data-[collapsible=icon]:w-[calc(var(--sidebar-width-icon)_+_theme(spacing.4)_+2px)]"
@@ -324,6 +326,8 @@ const SidebarInset = React.forwardRef<
       ref={ref}
       className={cn(
         "relative flex min-h-svh flex-1 flex-col bg-background",
+        "md:peer-data-[side=left]:mr-12", // Added margin for right gap
+        "md:peer-data-[side=right]:ml-12", // Added margin for left gap
         "peer-data-[variant=inset]:min-h-[calc(100svh-theme(spacing.4))] md:peer-data-[variant=inset]:m-2 md:peer-data-[state=collapsed]:peer-data-[variant=inset]:ml-2 md:peer-data-[variant=inset]:ml-0 md:peer-data-[variant=inset]:rounded-xl md:peer-data-[variant=inset]:shadow",
         className
       )}
@@ -766,3 +770,6 @@ export {
   SidebarTrigger,
   useSidebar,
 }
+
+
+    
