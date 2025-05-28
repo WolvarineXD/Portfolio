@@ -183,7 +183,7 @@ export default function HomePage() {
   return (
     <div className="space-y-12 relative">
       {/* Hero Section */}
-      <section id="hero-section" className="bg-card p-6 md:p-10 rounded-lg shadow-md flex flex-col justify-center">
+      <section id="hero-section" className="bg-card p-2 rounded-lg shadow-md flex flex-col justify-center">
         <div className="container mx-auto text-left">
           <p className="text-lg text-primary mb-1">I&apos;m</p>
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-3 text-card-foreground">
@@ -448,11 +448,17 @@ export default function HomePage() {
                         <p>adith.kiran@example.com</p>
                       </div>
                     </div>
+                     <p className="pt-2 text-sm">
+                      Feel free to reach out via any of the methods above. I&apos;m always happy to discuss new projects, collaborations, or opportunities.
+                    </p>
                   </div>
                    <div className="mt-8 pt-6 border-t">
                      <h4 className="text-xl font-semibold text-card-foreground mb-3">Office Hours</h4>
                      <p className="text-muted-foreground">Monday - Friday: 9:00 AM - 5:00 PM</p>
                      <p className="text-muted-foreground">Saturday - Sunday: Closed</p>
+                     <p className="text-muted-foreground text-sm mt-2">
+                       I strive to respond to all inquiries within 24-48 business hours.
+                     </p>
                    </div>
                 </div>
               </div>
