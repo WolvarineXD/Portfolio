@@ -3,7 +3,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Download, Send, Github, Mail, Phone, MapPin, ExternalLink, ArrowUpCircle, ChevronDown, ChevronUp } from "lucide-react";
+import { Download, Send, Github, Mail, Phone, MapPin, ChevronDown, ChevronUp, Star, ListChecks, Briefcase } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useState, useEffect, useRef } from "react";
@@ -110,84 +110,9 @@ export default function HomePage() {
     },
   });
 
-  const [showScrollTopButton, setShowScrollTopButton] = useState(false);
-  const [animatedSubtitle, setAnimatedSubtitle] = useState("");
   const [isAboutExtendedVisible, setIsAboutExtendedVisible] = useState(false);
-  
-  const phrasesToAnimate = useRef(["Student at RV University", "Welcome to my Resume"]);
-  const currentPhraseIndex = useRef(0);
-  const currentCharIndex = useRef(0);
-  const isDeleting = useRef(false);
-  const animationTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const heroSubtitle = "RV University, B.T";
 
-  useEffect(() => {
-    const checkScrollTop = () => {
-      if (!showScrollTopButton && window.pageYOffset > 400) {
-        setShowScrollTopButton(true);
-      } else if (showScrollTopButton && window.pageYOffset <= 400) {
-        setShowScrollTopButton(false);
-      }
-    };
-    window.addEventListener("scroll", checkScrollTop);
-    return () => window.removeEventListener("scroll", checkScrollTop);
-  }, [showScrollTopButton]);
-
-  useEffect(() => {
-    const typingSpeed = 120;
-    const deletingSpeed = 70;
-    const delayBeforeNewPhrase = 1500; // Pause after typing a full phrase
-    const delayAfterDeleting = 500; // Pause after deleting a full phrase
-
-    const handleTypingAnimation = () => {
-      const currentPhrase = phrasesToAnimate.current[currentPhraseIndex.current];
-      let newSubtitle = "";
-      let nextDelay = typingSpeed;
-
-      if (isDeleting.current) {
-        // Deleting
-        newSubtitle = currentPhrase.substring(0, currentCharIndex.current - 1);
-        setAnimatedSubtitle(newSubtitle);
-        currentCharIndex.current -= 1;
-        nextDelay = deletingSpeed;
-
-        if (newSubtitle === "") {
-          isDeleting.current = false;
-          currentPhraseIndex.current = (currentPhraseIndex.current + 1) % phrasesToAnimate.current.length;
-          currentCharIndex.current = 0; // Reset for the new phrase
-          nextDelay = delayAfterDeleting;
-        }
-      } else {
-        // Typing
-        newSubtitle = currentPhrase.substring(0, currentCharIndex.current + 1);
-        setAnimatedSubtitle(newSubtitle);
-        currentCharIndex.current += 1;
-
-        if (newSubtitle === currentPhrase) {
-          isDeleting.current = true;
-          nextDelay = delayBeforeNewPhrase;
-        }
-      }
-      
-      if (animationTimeoutRef.current) {
-        clearTimeout(animationTimeoutRef.current);
-      }
-      animationTimeoutRef.current = setTimeout(handleTypingAnimation, nextDelay);
-    };
-
-    // Start the animation
-    animationTimeoutRef.current = setTimeout(handleTypingAnimation, typingSpeed);
-
-    return () => {
-      if (animationTimeoutRef.current) {
-        clearTimeout(animationTimeoutRef.current);
-      }
-    };
-  }, []);
-
-
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
 
   function onContactSubmit(data: ContactFormValues) {
     console.log(data);
@@ -204,20 +129,20 @@ export default function HomePage() {
       <section id="hero-section" className="bg-card p-6 md:p-10 rounded-lg shadow-md min-h-[calc(100vh-10rem)] flex flex-col justify-center">
         <div className="container mx-auto text-left">
           <p className="text-lg text-primary mb-1">I&apos;m</p>
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-3 text-foreground">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-3 text-card-foreground">
             Adith Kiran Kumar
           </h1>
-          <p className="text-xl md:text-2xl text-muted-foreground mb-8 min-h-[1.5em]">
-            {animatedSubtitle || <>&nbsp;</>}
+          <p className="text-xl md:text-2xl text-muted-foreground mb-8">
+            {heroSubtitle}
             <span className="inline-block ml-1 animate-pulse opacity-75">|</span>
           </p>
-          <div className="flex flex-col sm:flex-row items-start gap-4">
-            <Button size="lg" className="bg-foreground text-primary hover:bg-foreground/90 w-full sm:w-auto">
+          <div className="flex flex-col sm:flex-row items-start gap-0">
+            <Button size="lg" className="bg-secondary text-secondary-foreground hover:bg-secondary/90 w-full sm:w-auto rounded-r-none sm:rounded-r-md">
               <Download className="mr-2 h-5 w-5" />
               Resume
             </Button>
             <Link href="/#contact-section" passHref>
-              <Button size="lg" variant="default" className="w-full sm:w-auto">
+              <Button size="lg" variant="default" className="bg-primary text-primary-foreground hover:bg-primary/90 w-full sm:w-auto rounded-l-none sm:rounded-l-md">
                 <Send className="mr-2 h-5 w-5" />
                 Contact
               </Button>
@@ -231,7 +156,7 @@ export default function HomePage() {
         <div className="container mx-auto">
            <Card className="overflow-hidden shadow-xl rounded-lg">
             <CardHeader className="bg-muted/30 p-6 md:p-8">
-              <CardTitle className="text-3xl md:text-4xl font-bold text-primary">More About Adith Kiran Kumar</CardTitle>
+              <CardTitle className="text-3xl md:text-4xl font-bold text-primary border-b-2 border-primary pb-2 inline-block">More About Adith Kiran Kumar</CardTitle>
               <CardDescription className="text-lg md:text-xl text-muted-foreground mt-2">
                 In-depth journey, skills, and aspirations.
               </CardDescription>
@@ -266,7 +191,7 @@ export default function HomePage() {
               </div>
 
               {isAboutExtendedVisible && (
-                <div className="space-y-6 text-foreground/90 animate-in fade-in-50 duration-500">
+                <div className="space-y-6 text-card-foreground/90 animate-in fade-in-50 duration-500">
                   <section>
                     <h2 className="text-2xl font-semibold text-primary mb-3">My Story (Extended)</h2>
                     <p className="mb-4 leading-relaxed">
@@ -298,6 +223,41 @@ export default function HomePage() {
                   </section>
                 </div>
               )}
+            </CardContent>
+          </Card>
+        </div>
+      </section>
+
+      {/* Skills Section (Placeholder) */}
+      <section id="skills-section" className="py-12 md:py-16">
+        <div className="container mx-auto px-4 md:px-0">
+          <Card className="overflow-hidden shadow-xl rounded-lg">
+            <CardHeader className="bg-muted/30 p-6 md:p-8">
+              <CardTitle className="text-3xl md:text-4xl font-bold text-primary">My Skills</CardTitle>
+              <CardDescription className="text-lg md:text-xl text-muted-foreground mt-2">
+                A brief overview of my technical capabilities.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="p-6 md:p-8">
+              <p className="text-card-foreground">Detailed skills information will be added here soon...</p>
+              {/* You can add skill bars or categorized lists here later */}
+            </CardContent>
+          </Card>
+        </div>
+      </section>
+
+      {/* Service Section (Placeholder) */}
+      <section id="service-section" className="py-12 md:py-16">
+        <div className="container mx-auto px-4 md:px-0">
+          <Card className="overflow-hidden shadow-xl rounded-lg">
+            <CardHeader className="bg-muted/30 p-6 md:p-8">
+              <CardTitle className="text-3xl md:text-4xl font-bold text-primary">Services I Offer</CardTitle>
+              <CardDescription className="text-lg md:text-xl text-muted-foreground mt-2">
+                How I can help you achieve your goals.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="p-6 md:p-8">
+              <p className="text-card-foreground">Details about services will be added here soon...</p>
             </CardContent>
           </Card>
         </div>
@@ -336,7 +296,7 @@ export default function HomePage() {
                     {project.tags.map((tag) => (
                       <span
                         key={tag}
-                        className="text-xs bg-secondary text-secondary-foreground px-2.5 py-1 rounded-full font-medium"
+                        className="text-xs bg-accent text-accent-foreground px-2.5 py-1 rounded-full font-medium"
                       >
                         {tag}
                       </span>
@@ -350,7 +310,7 @@ export default function HomePage() {
                   {project.sourceLink && (
                     <Link href={project.sourceLink} passHref legacyBehavior>
                       <a target="_blank" rel="noopener noreferrer" className="w-full sm:w-auto">
-                      <Button variant="ghost" className="w-full group text-muted-foreground hover:text-foreground transition-all duration-300 ease-in-out">
+                      <Button variant="ghost" className="w-full group text-muted-foreground hover:text-card-foreground transition-all duration-300 ease-in-out">
                         <Github className="mr-2 h-4 w-4" /> Source Code
                       </Button>
                       </a>
@@ -376,7 +336,7 @@ export default function HomePage() {
             <CardContent className="p-6 md:p-8">
               <div className="grid md:grid-cols-2 gap-10">
                 <div>
-                  <h3 className="text-2xl font-semibold text-foreground mb-6">Send A Message</h3>
+                  <h3 className="text-2xl font-semibold text-card-foreground mb-6">Send A Message</h3>
                   <Form {...form}>
                     <form onSubmit={form.handleSubmit(onContactSubmit)} className="space-y-6">
                       <FormField
@@ -384,7 +344,7 @@ export default function HomePage() {
                         name="name"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Full Name</FormLabel>
+                            <FormLabel className="text-card-foreground/80">Full Name</FormLabel>
                             <FormControl>
                               <Input placeholder="Adith Kiran Kumar" {...field} />
                             </FormControl>
@@ -397,7 +357,7 @@ export default function HomePage() {
                         name="email"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Email Address</FormLabel>
+                            <FormLabel className="text-card-foreground/80">Email Address</FormLabel>
                             <FormControl>
                               <Input type="email" placeholder="email@example.com" {...field} />
                             </FormControl>
@@ -410,7 +370,7 @@ export default function HomePage() {
                         name="subject"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Subject</FormLabel>
+                            <FormLabel className="text-card-foreground/80">Subject</FormLabel>
                             <FormControl>
                               <Input placeholder="Project Inquiry" {...field} />
                             </FormControl>
@@ -423,7 +383,7 @@ export default function HomePage() {
                         name="message"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Your Message</FormLabel>
+                            <FormLabel className="text-card-foreground/80">Your Message</FormLabel>
                             <FormControl>
                               <Textarea
                                 placeholder="Tell me more about your project or query..."
@@ -435,7 +395,7 @@ export default function HomePage() {
                           </FormItem>
                         )}
                       />
-                      <Button type="submit" size="lg" className="w-full sm:w-auto">
+                      <Button type="submit" size="lg" className="w-full sm:w-auto bg-primary text-primary-foreground hover:bg-primary/90">
                         <Send className="mr-2 h-5 w-5" />
                         Send Message
                       </Button>
@@ -443,32 +403,32 @@ export default function HomePage() {
                   </Form>
                 </div>
                 <div className="space-y-6">
-                  <h3 className="text-2xl font-semibold text-foreground mb-6">Contact Information</h3>
+                  <h3 className="text-2xl font-semibold text-card-foreground mb-6">Contact Information</h3>
                   <div className="space-y-4 text-muted-foreground">
                     <div className="flex items-start">
                       <MapPin className="h-6 w-6 text-primary mr-4 mt-1 flex-shrink-0" />
                       <div>
-                        <h4 className="font-semibold text-foreground/90">Address</h4>
+                        <h4 className="font-semibold text-card-foreground/90">Address</h4>
                         <p>123 Tech Avenue, Innovation City, RV 560076</p>
                       </div>
                     </div>
                     <div className="flex items-start">
                       <Phone className="h-6 w-6 text-primary mr-4 mt-1 flex-shrink-0" />
                       <div>
-                        <h4 className="font-semibold text-foreground/90">Phone</h4>
+                        <h4 className="font-semibold text-card-foreground/90">Phone</h4>
                         <p>+1 (234) 567-8900</p>
                       </div>
                     </div>
                     <div className="flex items-start">
                       <Mail className="h-6 w-6 text-primary mr-4 mt-1 flex-shrink-0" />
                       <div>
-                        <h4 className="font-semibold text-foreground/90">Email</h4>
+                        <h4 className="font-semibold text-card-foreground/90">Email</h4>
                         <p>adith.kiran@example.com</p>
                       </div>
                     </div>
                   </div>
-                   <div className="mt-8 pt-6 border-t border-border">
-                     <h4 className="text-xl font-semibold text-foreground mb-3">Office Hours</h4>
+                   <div className="mt-8 pt-6 border-t">
+                     <h4 className="text-xl font-semibold text-card-foreground mb-3">Office Hours</h4>
                      <p className="text-muted-foreground">Monday - Friday: 9:00 AM - 5:00 PM</p>
                      <p className="text-muted-foreground">Saturday - Sunday: Closed</p>
                    </div>
@@ -479,21 +439,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Scroll to Top Button */}
-      {showScrollTopButton && (
-        <Button
-          onClick={scrollToTop}
-          className="fixed bottom-8 right-8 z-50 h-12 w-12 rounded-full p-0 shadow-lg"
-          variant="default"
-          size="icon"
-        >
-          <ArrowUpCircle className="h-6 w-6" />
-          <span className="sr-only">Scroll to top</span>
-        </Button>
-      )}
     </div>
   );
 }
-    
-
-    
