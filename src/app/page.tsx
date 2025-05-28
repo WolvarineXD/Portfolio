@@ -100,6 +100,7 @@ const projectsData: Project[] = [
 ];
 
 const phrases = ["Student at RV University", "Welcome to my Resume"];
+const FORMSpree_ENDPOINT = "https://formspree.io/f/mpwdvlvo"; 
 
 export default function HomePage() {
   const { toast } = useToast();
@@ -175,29 +176,49 @@ export default function HomePage() {
 
 
   async function onContactSubmit(data: ContactFormValues) {
+    if (FORMSpree_ENDPOINT === "https://formspree.io/f/YOUR_FORM_ID_HERE") {
+      toast({
+        variant: "destructive",
+        title: "Formspree Endpoint Not Configured!",
+        description: "Please replace 'YOUR_FORM_ID_HERE' in the code with your actual Formspree form ID.",
+      });
+      return;
+    }
     setIsSubmitting(true);
     try {
-      const response = await fetch('/api/contact', {
+      const response = await fetch(FORMSpree_ENDPOINT, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Accept': 'application/json', // Formspree recommends this for AJAX submissions
         },
         body: JSON.stringify(data),
       });
 
       if (response.ok) {
-        const result = await response.json();
         toast({
           title: "Message Sent!",
-          description: result.message || "Thanks for reaching out. I'll get back to you soon.",
+          description: "Thanks for reaching out. I'll get back to you soon via Formspree.",
         });
         form.reset();
       } else {
-        const errorResult = await response.json();
+        // Formspree might return errors in JSON format
+        let errorMessage = "Could not send your message. Please try again.";
+        try {
+            const errorResult = await response.json();
+            if (errorResult && errorResult.errors && errorResult.errors.length > 0) {
+                errorMessage = errorResult.errors.map((err: { field: string, message: string}) => `${err.field ? err.field + ': ' : ''}${err.message}`).join(', ');
+            } else if (errorResult && errorResult.error) {
+                errorMessage = errorResult.error;
+            }
+        } catch (e) {
+            // If parsing error response fails, use a generic message
+            console.error("Error parsing Formspree error response:", e);
+        }
         toast({
           variant: "destructive",
           title: "Uh oh! Something went wrong.",
-          description: errorResult.message || "Could not send your message. Please try again.",
+          description: errorMessage,
         });
       }
     } catch (error) {
@@ -205,7 +226,7 @@ export default function HomePage() {
       toast({
         variant: "destructive",
         title: "Uh oh! Something went wrong.",
-        description: "There was a problem connecting to the server. Please try again later.",
+        description: "There was a problem connecting to the server or Formspree. Please try again later.",
       });
     } finally {
       setIsSubmitting(false);
@@ -400,7 +421,7 @@ export default function HomePage() {
                           <FormItem>
                             <FormLabel className="text-card-foreground/80">Full Name</FormLabel>
                             <FormControl>
-                              <Input placeholder="Adith Kiran Kumar" {...field} />
+                              <Input placeholder="Username" {...field} />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
@@ -477,21 +498,21 @@ export default function HomePage() {
                       <MapPin className="h-6 w-6 text-primary mr-4 mt-1 flex-shrink-0" />
                       <div>
                         <h4 className="font-semibold text-card-foreground/90">Address</h4>
-                        <p>123 Tech Avenue, Innovation City, RV 560076</p>
+                        <p>#314 Janabharthi BDA Layout, RVCE Post Banglore- 560059</p>
                       </div>
                     </div>
                     <div className="flex items-start">
                       <Phone className="h-6 w-6 text-primary mr-4 mt-1 flex-shrink-0" />
                       <div>
                         <h4 className="font-semibold text-card-foreground/90">Phone</h4>
-                        <p>+1 (234) 567-8900</p>
+                        <p>+91 8904440075</p>
                       </div>
                     </div>
                     <div className="flex items-start">
                       <Mail className="h-6 w-6 text-primary mr-4 mt-1 flex-shrink-0" />
                       <div>
                         <h4 className="font-semibold text-card-foreground/90">Email</h4>
-                        <p>adith.kiran@example.com</p>
+                        <p>adith.sps@gmail.com</p>
                       </div>
                     </div>
                      <p className="pt-2 text-sm">
@@ -526,3 +547,6 @@ export default function HomePage() {
     </div>
   );
 }
+
+
+    
