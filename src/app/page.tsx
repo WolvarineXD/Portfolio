@@ -84,7 +84,7 @@ const projectsData: Project[] = [
     imageUrl: "https://placehold.co/600x400.png",
     imageHint: "data charts",
     tags: ["D3.js", "Python", "Flask", "Pandas"],
-    sourceLink: "#", // Added placeholder source link
+    sourceLink: "#", 
     category: "Data Visualization",
   },
   {
@@ -94,7 +94,7 @@ const projectsData: Project[] = [
     imageUrl: "https://placehold.co/600x400.png",
     imageHint: "weather app",
     tags: ["React Native", "Expo", "OpenWeatherMap API"],
-    sourceLink: "#", // Added placeholder source link
+    sourceLink: "#", 
     category: "Mobile Development",
   },
 ];
@@ -303,7 +303,7 @@ export default function HomePage() {
                 key={project.id}
                 className="flex flex-col overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out rounded-lg hover:-translate-y-1"
               >
-                <div className="relative w-full h-52 group">
+                <div className="relative w-full h-60 group">
                   <Image
                     src={project.imageUrl}
                     alt={project.title}
