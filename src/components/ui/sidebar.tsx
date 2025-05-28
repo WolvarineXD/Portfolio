@@ -565,7 +565,7 @@ const SidebarMenuButton = React.forwardRef<
         data-active={isActive}
         className={cn(
           sidebarMenuButtonVariants({ variant, size }), 
-          isActive ? "text-sidebar-primary" : "text-sidebar-foreground", // Apply active/inactive text color
+          isActive ? "text-sidebar-primary" : "text-sidebar-foreground", 
           className
         )}
         {...props}

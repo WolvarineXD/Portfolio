@@ -3,10 +3,10 @@
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Download, Send, Github, Mail, Phone, MapPin, ChevronDown, ChevronUp, Star, ListChecks, Briefcase } from "lucide-react";
+import { Download, Send, Github, Mail, Phone, MapPin, ChevronDown, ChevronUp } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -97,6 +97,7 @@ const projectsData: Project[] = [
   },
 ];
 
+const phrases = ["Student at RV University", "Welcome to my Resume"];
 
 export default function HomePage() {
   const { toast } = useToast();
@@ -110,8 +111,47 @@ export default function HomePage() {
     },
   });
 
+  const [heroSubtitle, setHeroSubtitle] = useState("");
+  const [phraseIndex, setPhraseIndex] = useState(0);
+  const [charIndex, setCharIndex] = useState(0);
+  const [isDeleting, setIsDeleting] = useState(false);
   const [isAboutExtendedVisible, setIsAboutExtendedVisible] = useState(false);
-  const heroSubtitle = "RV University, B.T";
+
+  useEffect(() => {
+    const typeSpeed = 100;
+    const deleteSpeed = 50;
+    const pauseDuration = 1500;
+    let timer: NodeJS.Timeout;
+
+    const handleTyping = () => {
+      const currentPhrase = phrases[phraseIndex];
+      if (isDeleting) {
+        if (charIndex > 0) {
+          setHeroSubtitle(currentPhrase.substring(0, charIndex - 1));
+          setCharIndex(charIndex - 1);
+          timer = setTimeout(handleTyping, deleteSpeed);
+        } else {
+          setIsDeleting(false);
+          setPhraseIndex((prevIndex) => (prevIndex + 1) % phrases.length);
+          // charIndex is already 0
+        }
+      } else {
+        if (charIndex < currentPhrase.length) {
+          setHeroSubtitle(currentPhrase.substring(0, charIndex + 1));
+          setCharIndex(charIndex + 1);
+          timer = setTimeout(handleTyping, typeSpeed);
+        } else {
+          timer = setTimeout(() => {
+            setIsDeleting(true);
+          }, pauseDuration);
+        }
+      }
+    };
+
+    timer = setTimeout(handleTyping, typeSpeed); // Initial call
+
+    return () => clearTimeout(timer);
+  }, [charIndex, isDeleting, phraseIndex]);
 
 
   function onContactSubmit(data: ContactFormValues) {
@@ -156,7 +196,7 @@ export default function HomePage() {
         <div className="container mx-auto">
            <Card className="overflow-hidden shadow-xl rounded-lg">
             <CardHeader className="bg-muted/30 p-6 md:p-8">
-              <CardTitle className="text-3xl md:text-4xl font-bold text-primary border-b-2 border-primary pb-2 inline-block">More About Adith Kiran Kumar</CardTitle>
+              <CardTitle className="text-3xl md:text-4xl font-bold text-card-foreground">More About Adith Kiran Kumar</CardTitle>
               <CardDescription className="text-lg md:text-xl text-muted-foreground mt-2">
                 In-depth journey, skills, and aspirations.
               </CardDescription>
@@ -223,41 +263,6 @@ export default function HomePage() {
                   </section>
                 </div>
               )}
-            </CardContent>
-          </Card>
-        </div>
-      </section>
-
-      {/* Skills Section (Placeholder) */}
-      <section id="skills-section" className="py-12 md:py-16">
-        <div className="container mx-auto px-4 md:px-0">
-          <Card className="overflow-hidden shadow-xl rounded-lg">
-            <CardHeader className="bg-muted/30 p-6 md:p-8">
-              <CardTitle className="text-3xl md:text-4xl font-bold text-primary">My Skills</CardTitle>
-              <CardDescription className="text-lg md:text-xl text-muted-foreground mt-2">
-                A brief overview of my technical capabilities.
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="p-6 md:p-8">
-              <p className="text-card-foreground">Detailed skills information will be added here soon...</p>
-              {/* You can add skill bars or categorized lists here later */}
-            </CardContent>
-          </Card>
-        </div>
-      </section>
-
-      {/* Service Section (Placeholder) */}
-      <section id="service-section" className="py-12 md:py-16">
-        <div className="container mx-auto px-4 md:px-0">
-          <Card className="overflow-hidden shadow-xl rounded-lg">
-            <CardHeader className="bg-muted/30 p-6 md:p-8">
-              <CardTitle className="text-3xl md:text-4xl font-bold text-primary">Services I Offer</CardTitle>
-              <CardDescription className="text-lg md:text-xl text-muted-foreground mt-2">
-                How I can help you achieve your goals.
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="p-6 md:p-8">
-              <p className="text-card-foreground">Details about services will be added here soon...</p>
             </CardContent>
           </Card>
         </div>

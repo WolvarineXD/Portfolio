@@ -4,7 +4,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React, { useEffect, useState } from "react";
-import { Home, FileText, Star, List, Archive, Mail } from "lucide-react";
+import { Home, FileText, Archive, Mail } from "lucide-react"; // Reverted icons
 import {
   SidebarMenu,
   SidebarMenuItem,
@@ -15,9 +15,7 @@ import { cn } from "@/lib/utils";
 const navItems = [
   { href: "/#hero-section", label: "Home", icon: Home },
   { href: "/#about-section", label: "About", icon: FileText },
-  { href: "/#skills-section", label: "Skills", icon: Star },
-  { href: "/#service-section", label: "Service", icon: List },
-  { href: "/#projects-section", label: "Portfolio", icon: Archive },
+  { href: "/#projects-section", label: "Portfolio", icon: Archive }, // Reverted label
   { href: "/#contact-section", label: "Contact", icon: Mail },
 ];
 
@@ -53,13 +51,15 @@ export function MainNav() {
               <SidebarMenuButton
                 asChild
                 isActive={isActive}
-                className="justify-start px-4 text-sidebar-foreground data-[active=true]:text-sidebar-primary"
+                // Reverted: className no longer directly sets active background, relies on sidebar.tsx variants.
+                // Text color and font-medium for active state are handled by sidebar.tsx logic too.
+                className="justify-start px-4 text-sidebar-foreground data-[active=true]:text-sidebar-primary data-[active=true]:font-medium"
               >
                 <a>
                   <item.icon 
                     className={cn(
-                      "h-5 w-5 mr-3", // Added margin for spacing
-                      isActive ? "text-sidebar-primary" : "text-sidebar-foreground"
+                      "h-5 w-5 mr-3", 
+                      isActive ? "text-sidebar-primary" : "text-sidebar-foreground" // Reverted icon color logic
                     )} 
                   />
                   <span>{item.label}</span>
