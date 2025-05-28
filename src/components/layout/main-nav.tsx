@@ -10,6 +10,7 @@ import {
   SidebarMenuItem,
   SidebarMenuButton,
 } from "@/components/ui/sidebar";
+import { cn } from "@/lib/utils";
 
 const navItems = [
   { href: "/#hero-section", label: "Home", icon: Home },
@@ -27,22 +28,26 @@ export function MainNav() {
       setCurrentHash(window.location.hash);
     };
 
-    // Set initial hash
+    // Set initial hash based on the current URL
     handleHashChange();
 
     window.addEventListener("hashchange", handleHashChange);
     return () => {
       window.removeEventListener("hashchange", handleHashChange);
     };
-  }, []);
+  }, []); // Empty dependency array ensures this runs once on mount and cleans up on unmount
 
   return (
     <SidebarMenu>
       {navItems.map((item) => {
-        const itemPath = item.href.startsWith("/#") ? item.href.substring(1) : item.href; // e.g., #hero-section or /
+        // item.href is like "/#hero-section"
+        // currentHash from window.location.hash is like "#hero-section"
+        // itemPath for "/#hero-section" becomes "#hero-section"
+        const itemPath = item.href.startsWith("/#") ? item.href.substring(1) : item.href;
+        
         const isActive = 
-          (itemPath === currentHash) || 
-          (item.href === "/#hero-section" && currentHash === "" && pathname === "/");
+          (currentHash === itemPath) || // Primary condition: current hash matches item's target hash
+          (item.href === "/#hero-section" && currentHash === "" && pathname === "/"); // Special case for home on initial load
 
         return (
           <SidebarMenuItem key={item.href}>
@@ -54,7 +59,12 @@ export function MainNav() {
               >
                 <a>
                   <span>{item.label}</span>
-                  <item.icon className="h-5 w-5 text-sidebar-foreground group-data-[active=true]:text-sidebar-primary-foreground" />
+                  <item.icon 
+                    className={cn(
+                      "h-5 w-5",
+                      isActive ? "text-sidebar-primary-foreground" : "text-sidebar-foreground"
+                    )} 
+                  />
                 </a>
               </SidebarMenuButton>
             </Link>
