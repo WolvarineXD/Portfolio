@@ -13,7 +13,7 @@ body {
 
 @layer base {
   :root {
-    --background: 54 100% 85%; /* Light Creamy Yellow */
+    --background: 54 100% 75%; /* Darker Creamy Yellow */
     --foreground: 0 0% 20%;    /* Dark Gray for text */
     --card: 0 0% 100%;          /* White for cards */
     --card-foreground: 0 0% 20%;/* Dark Gray for card text */
