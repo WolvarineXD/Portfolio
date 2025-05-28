@@ -3,9 +3,10 @@
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Download, Send, ArrowRight, Mail, Phone, MapPin, Eye, Github, ExternalLink, ArrowLeft } from "lucide-react";
+import { Download, Send, Github, Mail, Phone, MapPin, ChevronUp } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import React, { useState, useEffect } from "react";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -53,7 +54,7 @@ const projectsData: Project[] = [
     imageUrl: "https://placehold.co/600x400.png",
     imageHint: "portfolio website",
     tags: ["Next.js", "React", "Tailwind CSS", "TypeScript", "Shadcn UI"],
-    liveLink: "/#hero-section", // Link to the top of the page
+    liveLink: "/#hero-section", 
     sourceLink: "#", 
     category: "Web Development",
   },
@@ -113,6 +114,30 @@ export default function HomePage() {
     },
   });
 
+  const [showScrollTopButton, setShowScrollTopButton] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 300) {
+        setShowScrollTopButton(true);
+      } else {
+        setShowScrollTopButton(false);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
+
   function onContactSubmit(data: ContactFormValues) {
     console.log(data);
     toast({
@@ -123,7 +148,7 @@ export default function HomePage() {
   }
 
   return (
-    <div className="space-y-12">
+    <div className="space-y-12 relative">
       {/* Hero Section */}
       <section id="hero-section" className="bg-card p-6 md:p-10 rounded-lg shadow-md min-h-[calc(100vh-10rem)] flex flex-col justify-center">
         <div className="container mx-auto text-left">
@@ -140,7 +165,7 @@ export default function HomePage() {
               Resume
             </Button>
             <Link href="/#contact-section" passHref>
-              <Button size="lg" variant="default" className="w-full sm:w-auto"> {/* default uses primary color */}
+              <Button size="lg" variant="default" className="w-full sm:w-auto">
                 <Send className="mr-2 h-5 w-5" />
                 Contact
               </Button>
@@ -149,7 +174,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* About Me Section (Full content from former about page) */}
+      {/* About Me Section */}
       <section id="about-section" className="py-12 md:py-16">
         <div className="container mx-auto">
            <Card className="overflow-hidden shadow-xl rounded-lg">
@@ -207,7 +232,6 @@ export default function HomePage() {
                     Looking ahead, I aim to specialize in [Mention a specific area, e.g., full-stack development with a focus on AI integration, or cybersecurity research]. I am eager to apply my skills in a challenging professional environment where I can contribute to innovative projects and continue my growth. I am particularly interested in roles that allow me to [Mention type of work, e.g., build scalable web applications, develop intelligent systems, or protect digital assets].
                   </p>
                 </section>
-                {/* The "Back to Home" button is not needed in a single-page layout */}
               </div>
             </CardContent>
           </Card>
@@ -234,8 +258,9 @@ export default function HomePage() {
                   <Image
                     src={project.imageUrl}
                     alt={project.title}
-                    layout="fill"
-                    objectFit="cover"
+                    fill // Changed from layout="fill"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" // Added sizes for responsive images
+                    style={{ objectFit: 'cover' }} // Changed from objectFit="cover"
                     className="transition-transform duration-500 group-hover:scale-105"
                     data-ai-hint={project.imageHint}
                   />
@@ -258,15 +283,6 @@ export default function HomePage() {
                   <p className="text-muted-foreground text-sm leading-relaxed">{project.description}</p>
                 </CardContent>
                 <CardFooter className="flex flex-col sm:flex-row justify-start items-stretch sm:items-center gap-3 pt-4 border-t">
-                  {project.liveLink && (
-                    <Link href={project.liveLink} passHref legacyBehavior>
-                      <a target={project.liveLink.startsWith("http") ? "_blank" : "_self"} rel="noopener noreferrer" className="w-full sm:w-auto">
-                        <Button variant="outline" className="w-full group transition-all duration-300 ease-in-out hover:shadow-md">
-                          <Eye className="mr-2 h-4 w-4" /> Live Demo
-                        </Button>
-                      </a>
-                    </Link>
-                  )}
                   {project.sourceLink && (
                     <Link href={project.sourceLink} passHref legacyBehavior>
                       <a target="_blank" rel="noopener noreferrer" className="w-full sm:w-auto">
@@ -398,6 +414,20 @@ export default function HomePage() {
           </Card>
         </div>
       </section>
+
+      {showScrollTopButton && (
+        <Button
+          variant="default"
+          size="icon"
+          className="fixed bottom-6 right-6 h-12 w-12 rounded-full shadow-lg z-50"
+          onClick={scrollToTop}
+          aria-label="Scroll to top"
+        >
+          <ChevronUp className="h-6 w-6" />
+        </Button>
+      )}
     </div>
   );
 }
+
+    
