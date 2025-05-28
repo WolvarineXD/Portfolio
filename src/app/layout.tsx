@@ -77,7 +77,7 @@ export default function RootLayout({
             </SidebarFooter>
           </Sidebar>
           <SidebarInset>
-            <main className="flex-1 p-4 md:p-8 lg:p-12">
+            <main className="flex-1 p-2 md:p-4 lg:p-6">
               {children}
             </main>
           </SidebarInset>
