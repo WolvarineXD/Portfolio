@@ -1,10 +1,4 @@
-export function AppFooter() {
-  return (
-    <footer className="border-t bg-background">
-      <div className="container mx-auto py-6 px-4 text-center text-sm text-muted-foreground">
-        <p>&copy; {new Date().getFullYear()} Your Name. All rights reserved.</p>
-        <p>Built with Next.js and Tailwind CSS.</p>
-      </div>
-    </footer>
-  );
-}
+// This file is no longer used in the main layout as per the new design.
+// The sidebar now contains its own footer.
+// This file can be deleted or kept for potential future use.
+export {};

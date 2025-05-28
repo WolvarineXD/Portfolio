@@ -1,147 +1,64 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { ArrowRight, Eye, Briefcase } from "lucide-react";
+import { Download, Send, ArrowRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
-const featuredProjects = [
-  {
-    id: "1",
-    title: "E-commerce Platform",
-    description: "A full-featured online store with robust product management and secure payments.",
-    imageUrl: "https://placehold.co/600x400.png",
-    imageHint: "online shopping",
-    tags: ["React", "Node.js", "Stripe"],
-    liveLink: "#",
-    sourceLink: "#",
-  },
-  {
-    id: "2",
-    title: "Data Visualization Dashboard",
-    description: "Interactive dashboard for visualizing complex datasets with real-time updates.",
-    imageUrl: "https://placehold.co/600x400.png",
-    imageHint: "charts graphs",
-    tags: ["D3.js", "Python", "Flask"],
-    liveLink: "#",
-    sourceLink: "#",
-  },
-];
-
 export default function HomePage() {
   return (
-    <div className="space-y-12 md:space-y-16">
+    <div className="space-y-12">
       {/* Hero Section */}
-      <section className="text-center py-12 md:py-20 bg-card rounded-xl shadow-lg">
-        <div className="container mx-auto px-4">
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-6 text-primary">
-            Welcome to My Portfolio
+      <section className="bg-card p-6 md:p-10 rounded-lg shadow-md">
+        <div className="container mx-auto text-left">
+          <p className="text-lg text-primary mb-1">I&apos;m</p>
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-3 text-foreground">
+            Adith Kiran Kumar
           </h1>
-          <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-8">
-            I'm a passionate developer specializing in creating modern, responsive, and user-friendly web applications. Explore my work and learn more about my skills.
+          <p className="text-xl md:text-2xl text-muted-foreground mb-8">
+            Frontend Developer
           </p>
-          <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
-            <Link href="/projects" passHref>
-              <Button size="lg" className="w-full sm:w-auto group transition-all duration-300 ease-in-out hover:shadow-accent/30 hover:shadow-lg">
-                View My Projects
-                <Briefcase className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-              </Button>
-            </Link>
-            <Link href="/about" passHref>
-              <Button variant="outline" size="lg" className="w-full sm:w-auto group transition-all duration-300 ease-in-out hover:shadow-md">
-                About Me
-                <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-              </Button>
-            </Link>
+          <div className="flex flex-col sm:flex-row items-start gap-4">
+            <Button size="lg" className="bg-foreground text-primary hover:bg-foreground/90 w-full sm:w-auto">
+              <Download className="mr-2 h-5 w-5" />
+              Resume
+            </Button>
+            <Button size="lg" variant="default" className="w-full sm:w-auto"> {/* default uses primary color */}
+              <Send className="mr-2 h-5 w-5" />
+              Contact
+            </Button>
           </div>
         </div>
       </section>
 
       {/* About Me Snippet */}
-      <section className="container mx-auto px-4">
-        <Card className="overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
-          <div className="md:flex">
-            <div className="md:w-1/3">
+      <section className="bg-card p-6 md:p-10 rounded-lg shadow-md">
+        <div className="container mx-auto">
+          <h2 className="text-3xl font-bold text-foreground mb-2">About Me</h2>
+          <div className="w-16 h-1 bg-primary mb-8"></div>
+          <div className="md:flex md:space-x-8 items-start">
+            <div className="md:w-1/3 mb-6 md:mb-0 flex justify-center">
               <Image
-                src="https://placehold.co/400x400.png"
-                alt="Your Name"
-                width={400}
-                height={400}
-                className="object-cover w-full h-full"
-                data-ai-hint="professional portrait"
+                src="https://placehold.co/300x300.png"
+                alt="Adith Kiran Kumar - About"
+                width={250}
+                height={250}
+                className="rounded-lg object-cover shadow-md"
+                data-ai-hint="casual portrait"
               />
             </div>
-            <div className="md:w-2/3 p-6 md:p-8">
-              <CardHeader>
-                <CardTitle className="text-3xl text-primary">Hello, I'm [Your Name]</CardTitle>
-                <CardDescription className="text-lg">Full-Stack Developer & UI/UX Enthusiast</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4 text-foreground/90">
-                <p>
-                  I build digital experiences that are not only functional but also aesthetically pleasing. With a keen eye for detail and a commitment to quality, I transform ideas into reality.
-                </p>
-                <p>
-                  My expertise spans across various technologies including React, Next.js, Node.js, and more. I enjoy tackling complex problems and continuously learning new skills.
-                </p>
-              </CardContent>
-              <CardFooter>
+            <div className="md:w-2/3 space-y-4 text-muted-foreground">
+              <p>
+                Adith Kiran Kumar is a student currently pursuing a B.Tech Honours degree at RV University. He has a keen interest in various technological domains, including web designing, machine learning, data science, and cybersecurity. Adith is actively engaged in exploring and learning about these fields to broaden his knowledge and skills. With a focus on both creativity and technical expertise, Adith is likely to make valuable contributions in the intersection of technology and innovation.
+              </p>
+              <div className="pt-2">
                 <Link href="/about" passHref>
-                  <Button variant="link" className="text-accent p-0 h-auto hover:underline">
-                    Learn More About Me <ArrowRight className="ml-2 h-4 w-4" />
+                  <Button variant="secondary" size="lg"> {/* secondary is bright yellow with black text */}
+                    Read More <ArrowRight className="ml-2 h-4 w-4" />
                   </Button>
                 </Link>
-              </CardFooter>
+              </div>
             </div>
           </div>
-        </Card>
-      </section>
-
-      {/* Featured Projects Section */}
-      <section className="container mx-auto px-4">
-        <h2 className="text-3xl md:text-4xl font-bold text-center mb-10 text-primary">Featured Projects</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {featuredProjects.map((project) => (
-            <Card key={project.id} className="flex flex-col overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
-              <div className="relative w-full h-60">
-                <Image
-                  src={project.imageUrl}
-                  alt={project.title}
-                  layout="fill"
-                  objectFit="cover"
-                  data-ai-hint={project.imageHint}
-                />
-              </div>
-              <CardHeader>
-                <CardTitle className="text-2xl">{project.title}</CardTitle>
-                <div className="flex flex-wrap gap-2 mt-2">
-                  {project.tags.map(tag => (
-                    <span key={tag} className="text-xs bg-secondary text-secondary-foreground px-2 py-1 rounded-full">{tag}</span>
-                  ))}
-                </div>
-              </CardHeader>
-              <CardContent className="flex-grow">
-                <p className="text-muted-foreground">{project.description}</p>
-              </CardContent>
-              <CardFooter className="flex justify-between items-center">
-                <Link href={project.liveLink} passHref>
-                  <Button variant="outline" className="group transition-all duration-300 ease-in-out hover:shadow-md">
-                    <Eye className="mr-2 h-4 w-4" /> Live Demo
-                  </Button>
-                </Link>
-                <Link href="/projects" passHref>
-                  <Button variant="link" className="text-accent p-0 h-auto hover:underline">
-                    More Details <ArrowRight className="ml-1 h-4 w-4" />
-                  </Button>
-                </Link>
-              </CardFooter>
-            </Card>
-          ))}
-        </div>
-        <div className="text-center mt-12">
-          <Link href="/projects" passHref>
-            <Button size="lg" variant="secondary" className="group transition-all duration-300 ease-in-out hover:shadow-lg">
-              See All Projects <Briefcase className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-            </Button>
-          </Link>
         </div>
       </section>
     </div>

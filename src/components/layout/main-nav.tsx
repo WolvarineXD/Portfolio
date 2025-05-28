@@ -2,8 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, User, Briefcase, FolderGit2, Mail } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { Home, FileText, Star, ListOrdered, Archive, Mail } from "lucide-react";
 import {
   SidebarMenu,
   SidebarMenuItem,
@@ -12,9 +11,11 @@ import {
 
 const navItems = [
   { href: "/", label: "Home", icon: Home },
-  { href: "/about", label: "About Me", icon: User },
-  { href: "/projects", label: "Projects", icon: Briefcase },
-  // { href: "/contact", label: "Contact", icon: Mail }, // Example for future extension
+  { href: "/about", label: "About", icon: FileText },
+  { href: "/skills", label: "Skills", icon: Star }, // Assuming you'll create /skills page
+  { href: "/services", label: "Service", icon: ListOrdered }, // Assuming you'll create /services page
+  { href: "/projects", label: "Portfolio", icon: Archive },
+  { href: "/contact", label: "Contact", icon: Mail }, // Assuming you'll create /contact page
 ];
 
 export function MainNav() {
@@ -28,12 +29,12 @@ export function MainNav() {
             <SidebarMenuButton
               asChild
               isActive={pathname === item.href}
-              className="justify-start"
-              tooltip={{children: item.label, side: 'right', align: 'center'}}
+              className="justify-between px-4" // px-4 for padding, justify-between for text left, icon right
+              // Removed tooltip as sidebar is not collapsible to icon-only in the target design
             >
               <a>
-                <item.icon className="h-5 w-5" />
                 <span>{item.label}</span>
+                <item.icon className="h-5 w-5 text-sidebar-foreground group-data-[active=true]:text-sidebar-primary-foreground" />
               </a>
             </SidebarMenuButton>
           </Link>
