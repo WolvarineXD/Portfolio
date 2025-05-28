@@ -62,7 +62,8 @@ export function MainNav() {
                   <item.icon 
                     className={cn(
                       "h-5 w-5",
-                      isActive ? "text-sidebar-primary-foreground" : "text-sidebar-foreground"
+                      // Reverted icon color logic
+                      isActive ? "text-primary-foreground" : "text-muted-foreground"
                     )} 
                   />
                 </a>

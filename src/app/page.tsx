@@ -3,10 +3,10 @@
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Download, Send, Github, Mail, Phone, MapPin, ChevronUp } from "lucide-react";
+import { Download, Send, Github, Mail, Phone, MapPin, ExternalLink } from "lucide-react"; // Added ExternalLink
 import Image from "next/image";
 import Link from "next/link";
-import React, { useState, useEffect } from "react";
+import React from "react"; // Removed useState, useEffect for scroll-to-top
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -114,29 +114,9 @@ export default function HomePage() {
     },
   });
 
-  const [showScrollTopButton, setShowScrollTopButton] = useState(false);
+  // Removed showScrollTopButton state and useEffect for scroll handling
 
-  useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY > 300) {
-        setShowScrollTopButton(true);
-      } else {
-        setShowScrollTopButton(false);
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
-
-  const scrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
-  };
+  // Removed scrollToTop function
 
   function onContactSubmit(data: ContactFormValues) {
     console.log(data);
@@ -258,9 +238,8 @@ export default function HomePage() {
                   <Image
                     src={project.imageUrl}
                     alt={project.title}
-                    fill // Changed from layout="fill"
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" // Added sizes for responsive images
-                    style={{ objectFit: 'cover' }} // Changed from objectFit="cover"
+                    layout="fill" // Reverted
+                    objectFit="cover" // Reverted
                     className="transition-transform duration-500 group-hover:scale-105"
                     data-ai-hint={project.imageHint}
                   />
@@ -283,6 +262,15 @@ export default function HomePage() {
                   <p className="text-muted-foreground text-sm leading-relaxed">{project.description}</p>
                 </CardContent>
                 <CardFooter className="flex flex-col sm:flex-row justify-start items-stretch sm:items-center gap-3 pt-4 border-t">
+                  {project.liveLink && ( // Re-added Live Demo button
+                    <Link href={project.liveLink} passHref legacyBehavior>
+                      <a target="_blank" rel="noopener noreferrer" className="w-full sm:w-auto">
+                      <Button variant="default" className="w-full group hover:bg-primary/90 transition-all duration-300 ease-in-out">
+                         <ExternalLink className="mr-2 h-4 w-4" /> Live Demo
+                      </Button>
+                      </a>
+                    </Link>
+                  )}
                   {project.sourceLink && (
                     <Link href={project.sourceLink} passHref legacyBehavior>
                       <a target="_blank" rel="noopener noreferrer" className="w-full sm:w-auto">
@@ -415,19 +403,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {showScrollTopButton && (
-        <Button
-          variant="default"
-          size="icon"
-          className="fixed bottom-6 right-6 h-12 w-12 rounded-full shadow-lg z-50"
-          onClick={scrollToTop}
-          aria-label="Scroll to top"
-        >
-          <ChevronUp className="h-6 w-6" />
-        </Button>
-      )}
+      {/* Removed Scroll to Top Button */}
     </div>
   );
 }
-
-    
