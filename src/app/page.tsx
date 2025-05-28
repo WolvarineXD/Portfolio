@@ -3,7 +3,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Download, Send, Github, Mail, Phone, MapPin, ChevronDown, ChevronUp } from "lucide-react";
+import { Download, Send, Github, Mail, Phone, MapPin, ChevronDown, ChevronUp, ArrowUp } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useState, useEffect } from "react";
@@ -116,6 +116,7 @@ export default function HomePage() {
   const [charIndex, setCharIndex] = useState(0);
   const [isDeleting, setIsDeleting] = useState(false);
   const [isAboutExtendedVisible, setIsAboutExtendedVisible] = useState(false);
+  const [showScrollToTop, setShowScrollToTop] = useState(false);
 
   useEffect(() => {
     const typeSpeed = 100;
@@ -153,6 +154,22 @@ export default function HomePage() {
     return () => clearTimeout(timer);
   }, [charIndex, isDeleting, phraseIndex]);
 
+  useEffect(() => {
+    const checkScrollTop = () => {
+      if (!showScrollToTop && window.scrollY > 400) {
+        setShowScrollToTop(true);
+      } else if (showScrollToTop && window.scrollY <= 400) {
+        setShowScrollToTop(false);
+      }
+    };
+    window.addEventListener("scroll", checkScrollTop);
+    return () => window.removeEventListener("scroll", checkScrollTop);
+  }, [showScrollToTop]);
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
 
   function onContactSubmit(data: ContactFormValues) {
     console.log(data);
@@ -166,7 +183,7 @@ export default function HomePage() {
   return (
     <div className="space-y-12 relative">
       {/* Hero Section */}
-      <section id="hero-section" className="bg-card p-2 rounded-lg shadow-md min-h-[calc(100vh-10rem)] flex flex-col justify-center">
+      <section id="hero-section" className="bg-card p-6 md:p-10 rounded-lg shadow-md flex flex-col justify-center">
         <div className="container mx-auto text-left">
           <p className="text-lg text-primary mb-1">I&apos;m</p>
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-3 text-card-foreground">
@@ -444,6 +461,17 @@ export default function HomePage() {
         </div>
       </section>
 
+      {showScrollToTop && (
+        <Button
+          onClick={scrollToTop}
+          size="icon"
+          className="fixed bottom-8 right-8 z-50 rounded-full shadow-lg bg-primary text-primary-foreground hover:bg-primary/90 transition-opacity duration-300"
+          aria-label="Scroll to top"
+        >
+          <ArrowUp className="h-6 w-6" />
+        </Button>
+      )}
     </div>
   );
 }
+
