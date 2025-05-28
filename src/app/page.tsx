@@ -176,17 +176,40 @@ export default function HomePage() {
 
   async function onContactSubmit(data: ContactFormValues) {
     setIsSubmitting(true);
-    console.log("Form data:", data);
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
 
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1500));
-
-    toast({
-      title: "Message Sent!",
-      description: "Thanks for reaching out. I'll get back to you soon.",
-    });
-    form.reset();
-    setIsSubmitting(false);
+      if (response.ok) {
+        const result = await response.json();
+        toast({
+          title: "Message Sent!",
+          description: result.message || "Thanks for reaching out. I'll get back to you soon.",
+        });
+        form.reset();
+      } else {
+        const errorResult = await response.json();
+        toast({
+          variant: "destructive",
+          title: "Uh oh! Something went wrong.",
+          description: errorResult.message || "Could not send your message. Please try again.",
+        });
+      }
+    } catch (error) {
+      console.error("Contact form submission error:", error);
+      toast({
+        variant: "destructive",
+        title: "Uh oh! Something went wrong.",
+        description: "There was a problem connecting to the server. Please try again later.",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
   return (
@@ -503,4 +526,3 @@ export default function HomePage() {
     </div>
   );
 }
-
