@@ -183,7 +183,7 @@ const Sidebar = React.forwardRef<
         <div
           className={cn(
             "flex h-full w-[--sidebar-width] flex-col bg-sidebar text-sidebar-foreground",
-            side === "left" ? "ml-32" : "mr-32", 
+            side === "left" ? "ml-32" : "mr-32",
             className
           )}
           ref={ref}
@@ -325,7 +325,7 @@ const SidebarInset = React.forwardRef<
       ref={ref}
       className={cn(
         "relative flex min-h-svh flex-1 flex-col bg-background",
-        "md:peer-data-[side=left]:mr-32", // Right gap when sidebar is on the left
+        "md:peer-data-[side=left]:mr-48", // Right gap when sidebar is on the left
         "md:peer-data-[side=right]:ml-32", // Left gap when sidebar is on the right
         "peer-data-[variant=inset]:min-h-[calc(100svh-theme(spacing.4))] md:peer-data-[variant=inset]:m-2 md:peer-data-[state=collapsed]:peer-data-[variant=inset]:ml-2 md:peer-data-[variant=inset]:ml-0 md:peer-data-[variant=inset]:rounded-xl md:peer-data-[variant=inset]:shadow",
         className
@@ -516,7 +516,7 @@ const SidebarMenuItem = React.forwardRef<
 SidebarMenuItem.displayName = "SidebarMenuItem"
 
 const sidebarMenuButtonVariants = cva(
-  "peer/menu-button flex w-full items-center gap-2 overflow-hidden rounded-md p-2 text-left text-sm outline-none ring-sidebar-ring transition-transform duration-100 ease-out active:scale-[0.97] group-has-[[data-sidebar=menu-action]]/menu-item:pr-8 aria-disabled:pointer-events-none aria-disabled:opacity-50 data-[active=true]:font-medium group-data-[collapsible=icon]:!size-8 group-data-[collapsible=icon]:!p-2 [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0",
+  "peer/menu-button flex w-full items-center gap-2 overflow-hidden rounded-md p-2 text-left outline-none ring-sidebar-ring transition-transform duration-100 ease-out active:scale-[0.97] group-has-[[data-sidebar=menu-action]]/menu-item:pr-8 aria-disabled:pointer-events-none aria-disabled:opacity-50 data-[active=true]:font-medium group-data-[collapsible=icon]:!size-8 group-data-[collapsible=icon]:!p-2 [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0",
   {
     variants: {
       variant: {
@@ -567,8 +567,8 @@ const SidebarMenuButton = React.forwardRef<
         data-size={size}
         data-active={isActive}
         className={cn(
-          sidebarMenuButtonVariants({ variant, size }), 
-          isActive ? "text-sidebar-primary" : "text-sidebar-foreground", 
+          sidebarMenuButtonVariants({ variant, size }),
+          isActive ? "text-sidebar-primary font-medium" : "text-sidebar-foreground",
           className
         )}
         {...props}
@@ -769,5 +769,3 @@ export {
   SidebarTrigger,
   useSidebar,
 }
-
-
