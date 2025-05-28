@@ -3,7 +3,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Download, Send, Github, Mail, Phone, MapPin, ChevronDown, ChevronUp, ArrowUp } from "lucide-react";
+import { Download, Send, Github, Mail, Phone, MapPin, ChevronDown, ChevronUp, ArrowUp, Loader2 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useState, useEffect } from "react";
@@ -84,7 +84,7 @@ const projectsData: Project[] = [
     imageUrl: "https://placehold.co/600x400.png",
     imageHint: "data charts",
     tags: ["D3.js", "Python", "Flask", "Pandas"],
-    sourceLink: "#", 
+    sourceLink: "#",
     category: "Data Visualization",
   },
   {
@@ -94,7 +94,7 @@ const projectsData: Project[] = [
     imageUrl: "https://placehold.co/600x400.png",
     imageHint: "weather app",
     tags: ["React Native", "Expo", "OpenWeatherMap API"],
-    sourceLink: "#", 
+    sourceLink: "#",
     category: "Mobile Development",
   },
 ];
@@ -103,6 +103,7 @@ const phrases = ["Student at RV University", "Welcome to my Resume"];
 
 export default function HomePage() {
   const { toast } = useToast();
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const form = useForm<ContactFormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -173,19 +174,25 @@ export default function HomePage() {
   };
 
 
-  function onContactSubmit(data: ContactFormValues) {
-    console.log(data);
+  async function onContactSubmit(data: ContactFormValues) {
+    setIsSubmitting(true);
+    console.log("Form data:", data);
+
+    // Simulate API call
+    await new Promise(resolve => setTimeout(resolve, 1500));
+
     toast({
       title: "Message Sent!",
       description: "Thanks for reaching out. I'll get back to you soon.",
     });
     form.reset();
+    setIsSubmitting(false);
   }
 
   return (
     <div className="space-y-12 relative">
       {/* Hero Section */}
-      <section id="hero-section" className="bg-card p-2 rounded-lg shadow-md flex flex-col justify-center">
+      <section id="hero-section" className="bg-card rounded-lg shadow-md flex flex-col justify-center p-2">
         <div className="container mx-auto text-left">
           <p className="text-lg text-primary mb-1">I&apos;m</p>
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-3 text-card-foreground">
@@ -419,9 +426,23 @@ export default function HomePage() {
                           </FormItem>
                         )}
                       />
-                      <Button type="submit" size="lg" className="w-full sm:w-auto bg-primary text-primary-foreground hover:bg-primary/90">
-                        <Send className="mr-2 h-5 w-5" />
-                        Send Message
+                      <Button
+                        type="submit"
+                        size="lg"
+                        className="w-full sm:w-auto bg-primary text-primary-foreground hover:bg-primary/90"
+                        disabled={isSubmitting}
+                      >
+                        {isSubmitting ? (
+                          <>
+                            <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                            Sending...
+                          </>
+                        ) : (
+                          <>
+                            <Send className="mr-2 h-5 w-5" />
+                            Send Message
+                          </>
+                        )}
                       </Button>
                     </form>
                   </Form>
