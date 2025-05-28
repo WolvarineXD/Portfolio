@@ -166,7 +166,7 @@ export default function HomePage() {
   return (
     <div className="space-y-12 relative">
       {/* Hero Section */}
-      <section id="hero-section" className="bg-card p-3 md:p-4 rounded-lg shadow-md min-h-[calc(100vh-10rem)] flex flex-col justify-center">
+      <section id="hero-section" className="bg-card p-2 rounded-lg shadow-md min-h-[calc(100vh-10rem)] flex flex-col justify-center">
         <div className="container mx-auto text-left">
           <p className="text-lg text-primary mb-1">I&apos;m</p>
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-3 text-card-foreground">
