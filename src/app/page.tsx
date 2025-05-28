@@ -51,7 +51,7 @@ const projectsData: Project[] = [
     id: "proj1",
     title: "Portfolio Website",
     description: "This very website, showcasing my skills and projects. Built with Next.js and Tailwind CSS.",
-    imageUrl: "https://placehold.co/600x400.png",
+    imageUrl: "/Screenshot 2025-05-28 131453.png",
     imageHint: "portfolio website",
     tags: ["Next.js", "React", "Tailwind CSS", "TypeScript", "Shadcn UI"],
     sourceLink: "#",
