@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, FileText, Star, Archive, Mail } from "lucide-react"; // Removed ListOrdered
+import { Home, FileText, Archive, Mail } from "lucide-react"; // Removed Star
 import {
   SidebarMenu,
   SidebarMenuItem,
@@ -12,7 +12,7 @@ import {
 const navItems = [
   { href: "/", label: "Home", icon: Home },
   { href: "/about", label: "About", icon: FileText },
-  { href: "/skills", label: "Skills", icon: Star },
+  // { href: "/skills", label: "Skills", icon: Star }, // Removed skills link
   { href: "/projects", label: "Portfolio", icon: Archive },
   { href: "/contact", label: "Contact", icon: Mail },
 ];
